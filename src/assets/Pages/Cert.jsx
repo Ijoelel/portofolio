@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import api from "../api.json";
 import { Slider } from "reactjs-simple-slider";
-import {ChevronLeftIcon, ChevronRightIcon} from "@heroicons/react/24/outline"
+import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
 
 export default function Cert() {
 	return (
@@ -61,7 +61,7 @@ export default function Cert() {
 												onClick={() =>
 													document
 														.getElementById(
-															`my_modal_${i}`
+															`my_modal_${i}`,
 														)
 														.showModal()
 												}
@@ -74,20 +74,24 @@ export default function Cert() {
 											className="modal"
 										>
 											<div className="modal-box">
-												<Slider
-													objectFit="contain"
-													images={item.image}
-													leftArrow={() => {
-														return(
-															<ChevronLeftIcon className="w-7 h-7 md:w-12 stroke-accent opacity-50 hover:opacity-100"/>
-														)
-													}}
-													rightArrow={() => {
-														return(
-															<ChevronRightIcon className="w-7 h-7 md:w-12 stroke-accent opacity-50 hover:opacity-100"/>
-														)
-													}}
-												/>
+												{item.image.length > 1 ? (
+													<Slider
+														objectFit="contain"
+														images={item.image}
+														leftArrow={() => {
+															return (
+																<ChevronLeftIcon className="w-7 h-7 md:w-12 stroke-accent opacity-50 hover:opacity-100" />
+															);
+														}}
+														rightArrow={() => {
+															return (
+																<ChevronRightIcon className="w-7 h-7 md:w-12 stroke-accent opacity-50 hover:opacity-100" />
+															);
+														}}
+													/>
+												) : (
+													<img src={item.image[0]} />
+												)}
 											</div>
 
 											<form
