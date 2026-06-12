@@ -7,7 +7,8 @@ export default {
   plugins: [require("daisyui")],
   theme: {
     fontFamily: {
-      'poppins' : ['poppins', 'sans-serif']
+      'sans': ['"Space Grotesk"', 'sans-serif'],
+      'mono': ['"JetBrains Mono"', 'monospace'],
     },
     extend: {},
   },
