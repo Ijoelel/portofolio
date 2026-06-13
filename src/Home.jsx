@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useMemo } from "react";
+import { useState, useEffect, useRef, useMemo, useCallback } from "react";
 import { Instagram, Linkedin, GitHub } from "react-feather";
 import Typewriter from "typewriter-effect";
 import Background3D from "./assets/Background3D";
@@ -166,9 +166,17 @@ export default function Home() {
     const [activeProject, setActiveProject] = useState(null);
     const [coords, setCoords] = useState({ x: "0.00", y: "0.00" });
 
+    const handleStartExit = useCallback(() => {
+        setIsExitingLoader(true);
+    }, []);
+
+    const handleComplete = useCallback(() => {
+        setLoading(false);
+    }, []);
+
     useEffect(() => {
         if (isExitingLoader) {
-            setTimeout(() => setShowContent(true), 400);
+            setTimeout(() => setShowContent(true), 1200);
         }
     }, [isExitingLoader]);
 
@@ -186,8 +194,8 @@ export default function Home() {
         <div className="relative min-h-screen bg-[#0A0A0A] text-[#E0E0E0] font-sans selection:bg-[#A3E635] selection:text-[#0A0A0A] pb-24 overflow-x-hidden bg-grid-pattern cursor-crosshair-custom">
             {loading && (
                 <LoadingScreen
-                    onStartExit={() => setIsExitingLoader(true)}
-                    onComplete={() => setLoading(false)}
+                    onStartExit={handleStartExit}
+                    onComplete={handleComplete}
                 />
             )}
 
