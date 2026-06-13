@@ -139,7 +139,7 @@ function CustomCursor() {
     return (
         <div
             ref={cursorRef}
-            className="fixed pointer-events-none z-50 mix-blend-difference hidden md:block"
+            className="fixed pointer-events-none z-[100] hidden md:block"
             style={{
                 left: `${position.x}px`,
                 top: `${position.y}px`,
@@ -147,13 +147,13 @@ function CustomCursor() {
             }}
         >
             <div
-                className={`w-8 h-8 rounded-full border border-[#A3E635] flex items-center justify-center transition-all duration-300 ${hovered ? "border-dashed bg-[#A3E635]/10 animate-cursor-hover" : "scale-100"}`}
+                className={`w-8 h-8 rounded-full border border-[#A3E635] flex items-center justify-center transition-all duration-300 mix-blend-difference ${hovered ? "border-dashed bg-[#A3E635]/10 animate-cursor-hover" : "scale-100"}`}
             >
                 <div className="w-1.5 h-1.5 bg-[#A3E635] rounded-full" />
             </div>
 
             {hoverText && (
-                <div className="absolute left-10 top-0 font-mono text-[9px] text-[#A3E635] tracking-widest bg-[#0A0A0A] px-1.5 py-0.5 border border-[#A3E635]/30">
+                <div className="absolute left-10 top-0 font-mono text-[10px] font-bold text-[#0A0A0A] tracking-widest bg-[#A3E635] px-2 py-0.5 shadow-lg">
                     {hoverText}
                 </div>
             )}
@@ -183,7 +183,7 @@ export default function Home() {
 
     useEffect(() => {
         if (isExitingLoader) {
-            setTimeout(() => setShowContent(true), 1200);
+            setTimeout(() => setShowContent(true), 100);
         }
     }, [isExitingLoader]);
 
@@ -225,7 +225,7 @@ export default function Home() {
 
             {!loading && <CustomCursor />}
 
-            {!loading && (
+            {/* {!loading && (
                 <div className="fixed bottom-6 right-8 z-20 font-mono text-[10px] text-[#808080]/60 hidden md:block select-none pointer-events-none">
                     [X: {coords.x} Y: {coords.y}]
                 </div>
@@ -236,7 +236,7 @@ export default function Home() {
                     activeProject={activeProject}
                     isEntering={isCinematic}
                 />
-            )}
+            )} */}
 
             <div
                 className={`relative z-10 transition-all duration-[1200ms] transform ease-out ${showContent ? "translate-y-0 opacity-100" : "translate-y-12 opacity-0"}`}
