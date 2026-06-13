@@ -10,7 +10,7 @@ function LoadingScreen({ onStartExit, onComplete }) {
     useEffect(() => {
         let startTime = null;
         let animationFrameId;
-        const duration = 1500; // 1.5 seconds to reach 99%
+        const duration = 1200; // 1.5 seconds to reach 99%
 
         const animateProgress = (timestamp) => {
             if (!startTime) startTime = timestamp;
@@ -18,7 +18,7 @@ function LoadingScreen({ onStartExit, onComplete }) {
 
             // Ease-out quad function for smooth deceleration
             const easeOutQuad = (t) => t * (2 - t);
-            
+
             let rawProgress = Math.min(elapsed / duration, 1);
             let currentProgress = Math.floor(easeOutQuad(rawProgress) * 99);
 
@@ -36,8 +36,8 @@ function LoadingScreen({ onStartExit, onComplete }) {
                     }, 400);
                     setTimeout(() => {
                         if (onComplete) onComplete();
-                    }, 1400);
-                }, 1200);
+                    }, 1000);
+                }, 100);
             }
         };
 
@@ -76,7 +76,7 @@ function LoadingScreen({ onStartExit, onComplete }) {
                                 key={i}
                                 className={`absolute w-1.5 h-1.5 rounded-full bg-[#A3E635] transition-all duration-300 ease-out ${isVisible ? "opacity-100 shadow-[0_0_12px_#A3E635] scale-100" : "opacity-0 scale-50"}`}
                                 style={{
-                                    transform: `translate(${x}px, ${y}px) ${isVisible ? 'scale(1)' : 'scale(0.5)'}`,
+                                    transform: `translate(${x}px, ${y}px) ${isVisible ? "scale(1)" : "scale(0.5)"}`,
                                 }}
                             />
                         );
@@ -146,10 +146,12 @@ function CustomCursor() {
                 transform: "translate(-50%, -50%)",
             }}
         >
-            <div className={`w-8 h-8 rounded-full border border-[#A3E635] flex items-center justify-center transition-all duration-300 ${hovered ? 'border-dashed bg-[#A3E635]/10 animate-cursor-hover' : 'scale-100'}`}>
+            <div
+                className={`w-8 h-8 rounded-full border border-[#A3E635] flex items-center justify-center transition-all duration-300 ${hovered ? "border-dashed bg-[#A3E635]/10 animate-cursor-hover" : "scale-100"}`}
+            >
                 <div className="w-1.5 h-1.5 bg-[#A3E635] rounded-full" />
             </div>
-            
+
             {hoverText && (
                 <div className="absolute left-10 top-0 font-mono text-[9px] text-[#A3E635] tracking-widest bg-[#0A0A0A] px-1.5 py-0.5 border border-[#A3E635]/30">
                     {hoverText}
@@ -163,11 +165,16 @@ export default function Home() {
     const [loading, setLoading] = useState(true);
     const [isExitingLoader, setIsExitingLoader] = useState(false);
     const [showContent, setShowContent] = useState(false);
+    const [isCinematic, setIsCinematic] = useState(false);
     const [activeProject, setActiveProject] = useState(null);
     const [coords, setCoords] = useState({ x: "0.00", y: "0.00" });
 
     const handleStartExit = useCallback(() => {
         setIsExitingLoader(true);
+        setIsCinematic(true);
+        setTimeout(() => {
+            setIsCinematic(false);
+        }, 3000);
     }, []);
 
     const handleComplete = useCallback(() => {
@@ -183,7 +190,9 @@ export default function Home() {
     useEffect(() => {
         const trackCoords = (e) => {
             const xPercent = ((e.clientX / window.innerWidth) * 100).toFixed(2);
-            const yPercent = ((e.clientY / window.innerHeight) * 100).toFixed(2);
+            const yPercent = ((e.clientY / window.innerHeight) * 100).toFixed(
+                2,
+            );
             setCoords({ x: xPercent, y: yPercent });
         };
         window.addEventListener("mousemove", trackCoords);
@@ -207,8 +216,27 @@ export default function Home() {
                 </div>
             )}
 
-            <Background3D activeProject={activeProject} isEntering={isExitingLoader && !showContent} />
+            {(isExitingLoader || !loading) && (
+                <Background3D
+                    activeProject={activeProject}
+                    isEntering={isCinematic}
+                />
+            )}
 
+            {!loading && <CustomCursor />}
+
+            {!loading && (
+                <div className="fixed bottom-6 right-8 z-20 font-mono text-[10px] text-[#808080]/60 hidden md:block select-none pointer-events-none">
+                    [X: {coords.x} Y: {coords.y}]
+                </div>
+            )}
+
+            {!loading && (
+                <Background3D
+                    activeProject={activeProject}
+                    isEntering={isCinematic}
+                />
+            )}
 
             <div
                 className={`relative z-10 transition-all duration-[1200ms] transform ease-out ${showContent ? "translate-y-0 opacity-100" : "translate-y-12 opacity-0"}`}
@@ -230,7 +258,10 @@ export default function Home() {
                         <div className="font-mono text-xs text-[#808080] mb-8">
                             {`// SOFTWARE ENGINEER`}
                         </div>
-                        <h1 className="text-5xl md:text-8xl font-bold leading-[1.05] tracking-tighter mb-8 max-w-4xl text-white mix-blend-difference glitch-text" data-text="AFRIZAL LUTHFI">
+                        <h1
+                            className="text-5xl md:text-8xl font-bold leading-[1.05] tracking-tighter mb-8 max-w-4xl text-white mix-blend-difference glitch-text"
+                            data-text="AFRIZAL LUTHFI"
+                        >
                             <span className="block">AFRIZAL LUTHFI</span>
                             <span className="block text-[#A3E635]">
                                 EKA ARNATHA
